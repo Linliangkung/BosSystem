@@ -146,6 +146,28 @@
 	        resizable:false
 	    });
 		
+		
+		// 拓展easyui validatebox的校验规则
+		$.extend($.fn.validatebox.defaults.rules, { 
+			telephone: { 
+			validator: function(value, param){ 
+				//return false校验失败;return true校验成功
+				var reg=/^1[3|4|5|7|8][0-9]{9}$/;
+				return reg.test(value);
+			}, 
+			message: '请输入正确手机号码' 
+			} 
+		}); 
+		
+		//为保存按钮添加点击时间
+		$("#save").click(function(){
+				//表单校验
+				if($("#addStaffForm").form("validate")){
+					//表单校验通过提交表单
+					$("#addStaffForm").submit();
+				}
+			});
+
 	});
 
 	function doDblClickRow(rowIndex, rowData){
@@ -165,23 +187,19 @@
 		</div>
 		
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="addStaffForm" action="${pageContext.request.contextPath }/staffAction_add.action" method="post">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">收派员信息</td>
 					</tr>
 					<!-- TODO 这里完善收派员添加 table -->
 					<tr>
-						<td>取派员编号</td>
-						<td><input type="text" name="id" class="easyui-validatebox" required="true"/></td>
-					</tr>
-					<tr>
 						<td>姓名</td>
 						<td><input type="text" name="name" class="easyui-validatebox" required="true"/></td>
 					</tr>
 					<tr>
 						<td>手机</td>
-						<td><input type="text" name="telephone" class="easyui-validatebox" required="true"/></td>
+						<td><input type="text" name="telephone" class="easyui-validatebox" required="true" data-options="validType:'telephone'"/></td>
 					</tr>
 					<tr>
 						<td>单位</td>

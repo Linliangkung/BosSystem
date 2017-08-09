@@ -7,7 +7,7 @@ public class User implements java.io.Serializable {
 
 	// Fields
 
-	private String id;
+	private Integer id;
 	private String username;
 	private String password;
 	private Double salary;
@@ -24,14 +24,14 @@ public class User implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public User(String id, String username, String password) {
+	public User(Integer id, String username, String password) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 	}
 
 	/** full constructor */
-	public User(String id, String username, String password, Double salary,
+	public User(Integer id, String username, String password, Double salary,
 			Date birthday, String gender, String station, String telephone,
 			String remark) {
 		this.id = id;
@@ -47,11 +47,11 @@ public class User implements java.io.Serializable {
 
 	// Property accessors
 
-	public String getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

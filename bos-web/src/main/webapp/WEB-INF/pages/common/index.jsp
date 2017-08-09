@@ -83,9 +83,54 @@
 		$("#btnCancel").click(function(){
 			$('#editPwdWindow').window('close');
 		});
-		
+		//为密码修改的确定按钮绑定了点击事件
 		$("#btnEp").click(function(){
-			alert("修改密码");
+			//进行表单校验
+			var b=$("#editPasswordForm").form("validate");
+			if(b){
+				//表单校验通过
+				 var newPass=$("#txtNewPass").val();
+				 var rePass=$("#txtRePass").val();
+				 var oldPass=$("#txtOldPass").val();
+				 var clear=false;
+				 if(newPass==rePass){
+					 //两次输入一致
+					 if(newPass!=oldPass){
+						 //新旧密码不一致
+						 //发送ajax请求到后台
+						 $.post("${pageContext.request.contextPath}/userAction_editPassword.action",
+							{"oldPassword":oldPass,
+							 "newPassword":newPass,
+							 "rePassword":rePass},
+							 function(data){
+								if(data.code==200){
+									//密码修改成功
+									$.messager.alert("提示","密码修改成功,即将推出系统","info");
+									$('#editPwdWindow').window('close');
+									window.setTimeout(function(){
+										location.href="${pageContext.request.contextPath}/login.jsp";
+									}, 2000);
+								}else{
+									//密码修改失败
+									$.messager.alert("警告",data.msg,"warning");
+								}
+							 },"json"
+						 ) ;
+					 }else{
+						 //新旧密码一致
+						 $.messager.alert("警告","新旧密码不能相同","warning");
+					 	clear=true;
+					 }
+				 }else{
+					 $.messager.alert("警告","两次密码输入不一致","warning");
+				 	clear=true;
+				 }
+				 
+				 if(clear){
+					 $("#txtNewPass").val("");
+					 $("#txtRePass").val("");
+				 }
+			}
 		});
 	});
 
@@ -142,7 +187,7 @@
 		$.messager
 		.confirm('系统提示','您确定要退出本次登录吗?',function(isConfirm) {
 			if (isConfirm) {
-				location.href = '${pageContext.request.contextPath }/login.jsp';
+				location.href = '${pageContext.request.contextPath }/userAction_logout.action';
 			}
 		});
 	}
@@ -161,7 +206,7 @@
 		style="height:80px;padding:10px;background:url('./images/header_bg.png') no-repeat right;">
 		<div id="sessionInfoDiv"
 			style="position: absolute;right: 5px;top:10px;">
-			[<strong>超级管理员</strong>]，欢迎你！
+			[<strong>${sessionScope.existUser.username }</strong>]，欢迎你！
 		</div>
 		<div style="position: absolute; right: 5px; bottom: 10px; ">
 			<a href="javascript:void(0);" class="easyui-menubutton"
@@ -228,16 +273,22 @@
         background: #fafafa">
         <div class="easyui-layout" fit="true">
             <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+            	<form id="editPasswordForm">
                 <table cellpadding=3>
+                	<tr>
+                        <td>旧密码：</td>
+                        <td><input id="txtOldPass" type="Password" class="txt01 easyui-validatebox" required="required"/></td>
+                    </tr>
                     <tr>
                         <td>新密码：</td>
-                        <td><input id="txtNewPass" type="Password" class="txt01" /></td>
+                        <td><input id="txtNewPass" type="Password" class="txt01 easyui-validatebox" required="required" data-options="validType:'length[4,15]'" /></td>
                     </tr>
                     <tr>
                         <td>确认密码：</td>
-                        <td><input id="txtRePass" type="Password" class="txt01" /></td>
+                        <td><input id="txtRePass" type="Password" class="txt01 easyui-validatebox" required="required" data-options="validType:'length[4,15]'"/></td>
                     </tr>
                 </table>
+            	</form>
             </div>
             <div region="south" border="false" style="text-align: right; height: 30px; line-height: 30px;">
                 <a id="btnEp" class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" >确定</a> 

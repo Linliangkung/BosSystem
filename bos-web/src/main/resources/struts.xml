@@ -8,11 +8,47 @@
 	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
 	<constant name="struts.objectFactory" value="spring" />
 	<constant name="struts.devMode" value="true" />
-
+	
+	
 	<package name="basicstruts2" namespace="/" extends="struts-default">
+		<!-- 拦截器 -->
+		<interceptors>
+			<!-- 配置校验登录拦截器 -->
+			<interceptor name="login" class="com.jsako.bos.web.interceptor.BOSLoginInterceptor">
+				<!-- 指定哪些方法不拦截 -->
+				<param name="excludeMethods">login</param>
+			</interceptor>
+			<!-- 配置自定义拦截器栈 -->			
+			<interceptor-stack name="myDefaultStack">
+				<interceptor-ref name="login"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<!-- 配置默认拦截器栈 -->
+		<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>
+		
+		<!-- 配置全局结果集 -->
+		<global-results>
+			<result name="toLogin" type="redirect">/login.jsp</result>
+		</global-results>
 		<!-- 需要进行权限控制的页面访问 -->
 		<action name="page_*_*">
 			<result>/WEB-INF/pages/{1}/{2}.jsp</result>
+		</action>
+		
+		<!-- 配置用户模块的Action -->
+		<action name="userAction_*" method="{1}" class="userAction">
+		 	<result name="home" type="redirect">/index.jsp</result>
+			<result name="login">/login.jsp</result>
+		</action>
+		
+		<!-- 配置取派员管理模块的Action -->
+		<action name="staffAction_*" method="{1}" class="staffAction">
+			<result name="list" type="redirectAction">
+				<param name="actionName">page_base_staff</param>
+				<param name="namespace">/</param>
+			</result>
 		</action>
 	</package>
 

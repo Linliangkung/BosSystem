@@ -3,6 +3,7 @@ package com.jsako.bos.dao.base;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.sql.Delete;
 
 /**	
@@ -16,4 +17,5 @@ public interface IBaseDao<T> {
 	void update(T entity);
 	T findById(Serializable id);
 	List<T> findAll();
+	void executeUpdate(String queryName,Object ...objects);
 }

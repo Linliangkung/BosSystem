@@ -6,7 +6,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.jsako.bos.dao.base.IBaseDao;
@@ -55,5 +58,18 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		String hql="FROM "+clazz.getSimpleName();
 		return (List<T>) this.getHibernateTemplate().find(hql);
 	}
+
+	@Override
+	public void executeUpdate(String queryName, Object... objects) {
+		Session currentSession = this.getSessionFactory().getCurrentSession();
+		Query query = currentSession.getNamedQuery(queryName);
+		int i=0;
+		//为hql的?赋值
+		for(Object object:objects){
+			query.setParameter(i++, object);
+		}
+		query.executeUpdate();
+	}
+
 
 }
