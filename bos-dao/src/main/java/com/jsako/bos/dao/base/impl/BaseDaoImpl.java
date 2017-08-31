@@ -2,17 +2,25 @@ package com.jsako.bos.dao.base.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.jdbc.Work;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.jsako.bos.dao.base.IBaseDao;
+import com.jsako.bos.domain.User;
+import com.jsako.bos.utils.PageBean;
 
 public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 
@@ -71,5 +79,23 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		query.executeUpdate();
 	}
 
-
+	@Override
+	public void pageQuery(PageBean pageBean) {
+		Integer currentPage = pageBean.getCurrentPage();
+		Integer pageSize = pageBean.getPageSize();
+		DetachedCriteria detachedCriteria = pageBean.getDetachedCriteria();
+		//1.查询total--总数据量
+		//设置聚合函数 select count(*) from ***;
+		detachedCriteria.setProjection(Projections.rowCount());
+		List<Long> countList = (List<Long>) getHibernateTemplate().findByCriteria(detachedCriteria);
+		if(countList!=null&&countList.size()>0){
+			pageBean.setTotal(countList.get(0).intValue());
+		}
+		//清空聚合函数
+		detachedCriteria.setProjection(null);
+		//2.查询rows--查询当前页需要的数据集合
+		Integer start=(currentPage-1)*pageSize;
+		List rows = getHibernateTemplate().findByCriteria(detachedCriteria,start,pageSize);
+		pageBean.setRows(rows);
+	}
 }

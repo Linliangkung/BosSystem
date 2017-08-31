@@ -25,11 +25,14 @@
         <property name="standard" type="java.lang.String">
             <column name="standard" length="100" />
         </property>
-        <set name="decidedzones" inverse="true">
+        <set name="decidedzones" inverse="true" >
             <key>
                 <column name="staff_id" length="32" />
             </key>
             <one-to-many class="Decidedzone" />
         </set>
     </class>
+    <query name="staff.updateDeltag">
+    	Update Staff s set s.deltag=? where s.id=?
+    </query>
 </hibernate-mapping>

@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.sql.Delete;
 
+import com.jsako.bos.utils.PageBean;
+
 /**	
  * 持久层通用接口
  * @author linliangkung
@@ -18,4 +20,5 @@ public interface IBaseDao<T> {
 	T findById(Serializable id);
 	List<T> findAll();
 	void executeUpdate(String queryName,Object ...objects);
+	void pageQuery(PageBean pageBean);
 }
