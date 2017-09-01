@@ -1,58 +1,29 @@
 package com.jsako.bos.web.action;
 
+
+
 import java.io.IOException;
-import java.util.List;
 
-import javax.print.attribute.standard.RequestingUserName;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts2.ServletActionContext;
-import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.jsako.bos.domain.Staff;
 import com.jsako.bos.service.IStaffService;
-import com.jsako.bos.utils.PageBean;
-import com.jsako.bos.web.action.base.BaseAction;
+import com.jsako.bos.web.action.base.BasePageQueryAction;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
 
 @Controller
 @Scope("prototype")
-public class StaffAction extends BaseAction<Staff>{
+public class StaffAction extends BasePageQueryAction<Staff>{
 	@Autowired
 	private IStaffService staffService;
-	
-	private Integer page;
-	private Integer rows;
 	
 	private String ids;
 	
 	public String add(){
 		staffService.add(getModel());
 		return LIST;
-	}
-	
-	public String pageQuery() throws IOException{
-		PageBean pageBean=new PageBean();
-		pageBean.setPageSize(rows);
-		pageBean.setCurrentPage(page);
-		DetachedCriteria detachedCriteria=DetachedCriteria.forClass(Staff.class);
-		pageBean.setDetachedCriteria(detachedCriteria);
-		staffService.pageQuery(pageBean);
-		//使用json-lib将pageBean转换成json数据,写回给浏览器页面
-		//设置那些属性不需要转成json输出
-		JsonConfig jsonConfig=new JsonConfig();
-		jsonConfig.setExcludes(new String[]{"currentPage","pageSize","detachedCriteria"});
-		String data = JSONObject.fromObject(pageBean,jsonConfig).toString();
-		HttpServletResponse response = ServletActionContext.getResponse();
-		response.setContentType("text/json");
-		response.setCharacterEncoding("utf-8");
-		response.getWriter().write(data);
-		return NONE;
 	}
 	
 	public String deleteBatch(){
@@ -73,14 +44,13 @@ public class StaffAction extends BaseAction<Staff>{
 		return LIST;
 	}
 	
-	public void setPage(Integer page) {
-		this.page = page;
+	public String pageQuery() throws IOException{
+		staffService.pageQuery(pageBean);
+		java2Json(pageBean,new String[] { "currentPage", "pageSize", "detachedCriteria" });
+		return NONE;
 	}
 
-	public void setRows(Integer rows) {
-		this.rows = rows;
-	}
-
+	
 	public void setIds(String ids) {
 		this.ids = ids;
 	}

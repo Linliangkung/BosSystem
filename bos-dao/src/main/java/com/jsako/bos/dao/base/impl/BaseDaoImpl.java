@@ -98,4 +98,9 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		List rows = getHibernateTemplate().findByCriteria(detachedCriteria,start,pageSize);
 		pageBean.setRows(rows);
 	}
+
+	@Override
+	public void saveOrUpdate(T entity) {
+		this.getHibernateTemplate().saveOrUpdate(entity);
+	}
 }

@@ -191,6 +191,12 @@
 			alert("执行查询...");
 		});
 		
+		$("#save").click(function(){
+			if($("#addSubareaForm").form("validate")){
+				$("#addSubareaForm").submit();
+			}
+		});
+						
 	});
 
 	function doDblClickRow(){
@@ -211,20 +217,16 @@
 		</div>
 		
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="addSubareaForm" method="post" action="${pageContext.request.contextPath }/subareaAction_add.action">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">分区信息</td>
 					</tr>
 					<tr>
-						<td>分拣编码</td>
-						<td><input type="text" name="id" class="easyui-validatebox" required="true"/></td>
-					</tr>
-					<tr>
 						<td>选择区域</td>
 						<td>
-							<input class="easyui-combobox" name="region.id"  
-    							data-options="valueField:'id',textField:'name',url:'json/standard.json'" />  
+							<input required="true" class="easyui-combobox" name="region.id"  
+    							data-options="valueField:'id',textField:'name',url:'${pageContext.request.contextPath}/regionAction_listajax.action',mode:'remote'" />  
 						</td>
 					</tr>
 					<tr>
@@ -242,7 +244,7 @@
 					<tr>
 						<td>单双号</td>
 						<td>
-							<select class="easyui-combobox" name="single" style="width:150px;">  
+							<select required="true" class="easyui-combobox" name="single" style="width:150px;">  
 							    <option value="0">单双号</option>  
 							    <option value="1">单号</option>  
 							    <option value="2">双号</option>  

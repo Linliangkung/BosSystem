@@ -11,7 +11,6 @@ import java.util.Set;
 public class Region implements java.io.Serializable {
 
 	// Fields
-
 	private String id;
 	private String province;
 	private String city;
@@ -20,7 +19,14 @@ public class Region implements java.io.Serializable {
 	private String shortcode;
 	private String citycode;
 	private Set subareas = new HashSet(0);
-
+	
+	/**
+	 * 转json数据时生成一个name字段
+	 * @return
+	 */
+	public String getName(){
+		return province+" "+city+" "+district;
+	}
 	// Constructors
 
 	/** default constructor */

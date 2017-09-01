@@ -50,6 +50,19 @@
 				<param name="namespace">/</param>
 			</result>
 		</action>
+		
+		<!-- 配置区域管理模块的Action -->
+		<action name="regionAction_*" method="{1}" class="regionAction">
+		</action>
+		
+		<!-- 配置分区管理模块的Action -->
+		<action name="subareaAction_*" method="{1}" class="subareaAction">
+		<result name="list" type="redirectAction">
+				<param name="actionName">page_base_subarea</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		
 	</package>
 
 </struts>

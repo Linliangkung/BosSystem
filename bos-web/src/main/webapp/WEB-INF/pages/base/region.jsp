@@ -26,6 +26,8 @@
 <script
 	src="${pageContext.request.contextPath }/js/easyui/locale/easyui-lang-zh_CN.js"
 	type="text/javascript"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/jquery.ocupload-1.1.2.js"></script>
 <script type="text/javascript">
 	function doAdd(){
 		$('#addRegionWindow').window("open");
@@ -107,15 +109,31 @@
 			border : false,
 			rownumbers : true,
 			striped : true,
-			pageList: [30,50,100],
+			pageList: [5,10,15],
 			pagination : true,
 			toolbar : toolbar,
-			url : "json/region.json",
+			url : "${pageContext.request.contextPath}/regionAction_pageQuery.action",
 			idField : 'id',
 			columns : columns,
 			onDblClickRow : doDblClickRow
 		});
 		
+		// 页面加载完成后,调用OCUpload插件的方法
+		$("#button-import").upload({
+			action:"${pageContext.request.contextPath}/regionAction_importXls.action",
+			name:"regionFile",
+			onComplete:function (data) {
+				var msg;
+				if(data=="1"){
+					msg="导入成功";
+					//重新刷新页面
+					window.location.reload();
+				}else{
+					msg="导入失败";
+				}
+				$.messager.alert("提示",msg,"info");
+		    }
+		});
 		// 添加、修改区域窗口
 		$('#addRegionWindow').window({
 	        title: '添加修改区域',

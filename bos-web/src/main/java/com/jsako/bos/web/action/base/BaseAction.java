@@ -10,9 +10,10 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T>{
 	private T model;
 	public static final String HOME = "home";
 	public static final String LIST = "list";
+	protected Class clazz;
 	public BaseAction() {
 		ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
-		Class clazz=(Class) genericSuperclass.getActualTypeArguments()[0];
+		clazz = (Class) genericSuperclass.getActualTypeArguments()[0];
 		try {
 			model=(T) clazz.newInstance();
 		} catch (Exception e) {
