@@ -44,7 +44,7 @@
 	}
 	
 	function doExport(){
-		alert("导出");
+		window.location.href="${pageContext.request.contextPath}/subareaAction_exportXls.action";
 	}
 	
 	function doImport(){
@@ -89,7 +89,7 @@
 		checkbox : true,
 	}, {
 		field : 'showid',
-		title : '分拣编号',
+		title : '分区编号',
 		width : 120,
 		align : 'center',
 		formatter : function(data,row ,index){
@@ -138,7 +138,16 @@
 		field : 'single',
 		title : '单双号',
 		width : 100,
-		align : 'center'
+		align : 'center',
+		formatter : function(data,row, index){
+			if(data=="0"){
+				return "单双号";
+			}else if(data=="1"){
+				return "单号";
+			}else{
+				return "双号";
+			}
+		}
 	} , {
 		field : 'position',
 		title : '位置',
@@ -160,7 +169,7 @@
 			pageList: [30,50,100],
 			pagination : true,
 			toolbar : toolbar,
-			url : "json/subarea.json",
+			url : "${pageContext.request.contextPath}/subareaAction_pageQuery.action",
 			idField : 'id',
 			columns : columns,
 			onDblClickRow : doDblClickRow
@@ -187,9 +196,34 @@
 	        height: 400,
 	        resizable:false
 	    });
+		//定义一个工具方法，将指定表单的输入项转换成json对象
+		$.fn.serializeJson=function(){  
+            var serializeObj={};  
+            var array=this.serializeArray();
+            $(array).each(function(){  
+                if(serializeObj[this.name]){  
+                    if($.isArray(serializeObj[this.name])){  
+                        serializeObj[this.name].push(this.value);  
+                    }else{  
+                        serializeObj[this.name]=[serializeObj[this.name],this.value];  
+                    }  
+                }else{  
+                    serializeObj[this.name]=this.value;   
+                }  
+            });  
+            return serializeObj;  
+        }; 
+		
 		$("#btn").click(function(){
-			alert("执行查询...");
+			//将查询窗口的表单数据转换成json对象
+			var queryJson=$("#querySubareaForm").serializeJson();
+			console.info(queryJson);
+			//通过datagrid的load方法重新加载数据
+			$("#grid").datagrid("load",queryJson);
+			//关闭查询窗口
+			$("#searchWindow").window("close");
 		});
+		
 		
 		$("#save").click(function(){
 			if($("#addSubareaForm").form("validate")){
@@ -262,7 +296,7 @@
 	<!-- 查询分区 -->
 	<div class="easyui-window" title="查询分区窗口" id="searchWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="querySubareaForm">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">查询条件</td>

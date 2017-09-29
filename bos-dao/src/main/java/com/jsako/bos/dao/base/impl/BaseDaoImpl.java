@@ -66,6 +66,11 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		String hql="FROM "+clazz.getSimpleName();
 		return (List<T>) this.getHibernateTemplate().find(hql);
 	}
+	
+	@Override
+	public List<T> findByCriteria(DetachedCriteria detachedCriteria) {
+		return (List<T>) getHibernateTemplate().findByCriteria(detachedCriteria);
+	}
 
 	@Override
 	public void executeUpdate(String queryName, Object... objects) {
@@ -93,6 +98,8 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 		//清空聚合函数
 		detachedCriteria.setProjection(null);
+		//设置hibernate按照ROOT_ENTITY的方式封装对象
+		detachedCriteria.setResultTransformer(DetachedCriteria.ROOT_ENTITY);
 		//2.查询rows--查询当前页需要的数据集合
 		Integer start=(currentPage-1)*pageSize;
 		List rows = getHibernateTemplate().findByCriteria(detachedCriteria,start,pageSize);
@@ -103,4 +110,6 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	public void saveOrUpdate(T entity) {
 		this.getHibernateTemplate().saveOrUpdate(entity);
 	}
+
+
 }

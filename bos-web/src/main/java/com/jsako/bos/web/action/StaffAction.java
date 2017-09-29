@@ -3,7 +3,9 @@ package com.jsako.bos.web.action;
 
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ public class StaffAction extends BasePageQueryAction<Staff>{
 	private IStaffService staffService;
 	
 	private String ids;
+	
+	private String q;
 	
 	public String add(){
 		staffService.add(getModel());
@@ -46,12 +50,21 @@ public class StaffAction extends BasePageQueryAction<Staff>{
 	
 	public String pageQuery() throws IOException{
 		staffService.pageQuery(pageBean);
-		java2Json(pageBean,new String[] { "currentPage", "pageSize", "detachedCriteria" });
+		java2Json(pageBean,new String[] { "currentPage", "pageSize", "detachedCriteria","decidedzones" });
 		return NONE;
 	}
-
+	
+	public String listajax() throws IOException{
+		List<Staff> staffs=staffService.findListNotDeleteByQ(q);
+		java2Json(staffs,new String[]{"telephone","haspda","deltag","station","standard","decidedzones"});
+		return NONE;
+	}
 	
 	public void setIds(String ids) {
 		this.ids = ids;
+	}
+
+	public void setQ(String q) {
+		this.q = q;
 	}
 }

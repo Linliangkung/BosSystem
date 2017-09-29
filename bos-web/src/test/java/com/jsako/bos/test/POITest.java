@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class POITest {
 	//使用poi解析excel文件
-	@Test
+	//@Test
 	public void test() throws FileNotFoundException, IOException{
 		String path="C:\\Users\\Administrator\\Desktop\\区域导入测试数据.xls";
 		//包装一个excel文件

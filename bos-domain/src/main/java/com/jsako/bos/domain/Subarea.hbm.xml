@@ -10,7 +10,7 @@
         <many-to-one name="decidedzone" class="Decidedzone" fetch="select">
             <column name="decidedzone_id" length="32" />
         </many-to-one>
-        <many-to-one name="region" class="Region" fetch="select">
+        <many-to-one name="region" class="Region" fetch="select" lazy="false">
             <column name="region_id" length="32" />
         </many-to-one>
         <property name="addresskey" type="java.lang.String">

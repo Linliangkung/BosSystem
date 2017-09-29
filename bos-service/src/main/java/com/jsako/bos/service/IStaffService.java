@@ -1,5 +1,7 @@
 package com.jsako.bos.service;
 
+import java.util.List;
+
 import com.jsako.bos.domain.Staff;
 import com.jsako.bos.utils.PageBean;
 
@@ -34,5 +36,11 @@ public interface IStaffService {
 	 * @param staff
 	 */
 	void update(Staff staff);
-	
+
+	/**
+	 * 根据q条件查询未删除取派员信息
+	 * @param q q条件
+	 * @return 
+	 */
+	List<Staff> findListNotDeleteByQ(String q);
 }

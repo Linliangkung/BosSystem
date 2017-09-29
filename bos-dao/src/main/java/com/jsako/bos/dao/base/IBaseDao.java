@@ -20,6 +20,7 @@ public interface IBaseDao<T> {
 	void update(T entity);
 	T findById(Serializable id);
 	List<T> findAll();
+	List<T> findByCriteria(DetachedCriteria detachedCriteria);
 	void executeUpdate(String queryName,Object ...objects);
 	void pageQuery(PageBean pageBean);
 }
