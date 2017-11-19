@@ -30,4 +30,12 @@ public class PinYin4JTest {
 		System.out.println(citycode);
 	}
 	
+	@Test
+	public void test2(){
+		
+		Integer[] integers=new Integer[0];
+		System.out.println(integers[0]);
+		
+	}
+	
 }

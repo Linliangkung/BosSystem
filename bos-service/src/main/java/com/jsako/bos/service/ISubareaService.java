@@ -30,5 +30,12 @@ public interface ISubareaService {
 	 * @return
 	 */
 	List<Subarea> findListNotAssociation();
+	
+	/**
+	 * 根据定区id查询所有分区集合数据
+	 * @param decidedzoneId 定区id
+	 * @return
+	 */
+	List<Subarea> findSubareaListByDecidedzoneId(String decidedzoneId);
 
 }

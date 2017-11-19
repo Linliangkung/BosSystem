@@ -65,7 +65,7 @@
 		
 		<!-- 配置定区管理模块的Action -->
 		<action name="decidedzoneAction_*" method="{1}" class="decidedzoneAction">
-		<result name="list" type="redirectAction">
+			<result name="list" type="redirectAction">
 				<param name="actionName">page_base_decidedzone</param>
 				<param name="namespace">/</param>
 			</result>

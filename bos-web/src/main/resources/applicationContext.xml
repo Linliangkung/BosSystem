@@ -2,6 +2,7 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:soap="http://cxf.apache.org/bindings/soap"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
 	http://www.springframework.org/schema/context 
@@ -9,7 +10,11 @@
 	http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
 	http://www.springframework.org/schema/tx 
-	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd ">
+	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd 
+	http://cxf.apache.org/bindings/soap 
+	http://cxf.apache.org/schemas/configuration/soap.xsd
+	http://cxf.apache.org/jaxws 
+	http://cxf.apache.org/schemas/jaxws.xsd">
 
 
 	<!-- 配置加载db.properties属性文件 -->
@@ -48,16 +53,23 @@
 	</bean>
 
 	<!-- 配置事务管理器 -->
-	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
-	
+
 	<!-- 配置使用注解方式管理事务 -->
-	<tx:annotation-driven/>
-	
+	<tx:annotation-driven />
+
 	<!-- 组件扫描(使用注解方式配置action、service、dao) -->
-	<context:component-scan base-package="com.jsako.bos"/>
-	
+	<context:component-scan base-package="com.jsako.bos" />
+
 	<!-- 配置开启spring的注解支持 -->
-	<context:annotation-config/>
+	<context:annotation-config />
+	
+	<!-- 配置crm服务的客户端代理对象 -->
+	<jaxws:client id="customerService"
+		address="http://192.168.0.104/crmbos/service/customer"
+		serviceClass="com.jsako.crmbos.service.impl.ICustomerService"
+	/>
 </beans>

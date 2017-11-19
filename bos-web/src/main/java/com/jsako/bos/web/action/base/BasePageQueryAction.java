@@ -49,7 +49,7 @@ public class BasePageQueryAction<T> extends BaseAction<T> {
 	 * 将list对象转成json，并相应给客户端
 	 * @throws IOException
 	 */
-	public void java2Json(List<T> list,String[] exclueds) throws IOException{
+	public void java2Json(List list,String[] exclueds) throws IOException{
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.setExcludes(exclueds);
 		String data = JSONArray.fromObject(list, jsonConfig).toString();

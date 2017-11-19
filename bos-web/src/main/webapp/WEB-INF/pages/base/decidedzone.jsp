@@ -44,7 +44,35 @@
 	}
 	
 	function doAssociations(){
-		$('#customerWindow').window('open');
+		if($('#grid').datagrid('getSelections').length==1){
+			$('#customerWindow').window('open');
+			$("#noassociationSelect").empty();
+			$("#associationSelect").empty();
+			var url1="${pageContext.request.contextPath}/decidedzoneAction_findCustomerListNotAssociation.action";
+			var url2="${pageContext.request.contextPath}/decidedzoneAction_findCustomerByDecidedzoneId.action";
+			$.post(url1,function(data){
+				 for(var i=0;i<data.length;i++){
+					var name=data[i].name;
+					var id=data[i].id;
+					var tel=data[i].telephone;
+					name=name+"("+tel+")";
+					$("#noassociationSelect").append("<option value='"+id+"'>"+name+"</option>");			
+				}  
+			});
+			
+			$.post(url2,{id:$('#grid').datagrid('getSelections')[0].id},function(data){
+				 for(var i=0;i<data.length;i++){
+					var name=data[i].name;
+					var id=data[i].id;
+					var tel=data[i].telephone;
+					name=name+"("+tel+")";
+					$("#associationSelect").append("<option value='"+id+"'>"+name+"</option>");			
+				}  
+			});
+			
+		}else{
+			$.messager.alert("提醒","只能选中一个定区项","info");
+		}
 	}
 	
 	//工具栏
@@ -161,20 +189,34 @@
 			}
 		});
 	
+		//为左右移动按钮添加点击事件
+		$("#toLeft").click(function(){
+			$("#noassociationSelect").append($("#associationSelect option:selected"));
+		});
 		
+		$("#toRight").click(function(){
+			$("#associationSelect").append($("#noassociationSelect option:selected"));
+		});
+		
+		//为关联客户按钮添加点击事件
+		$("#associationBtn").click(function(){
+			$("input[name=id]").val($('#grid').datagrid('getSelections')[0].id);
+			//在提交表单前将右侧下拉框所有的选项选中
+			$("#associationSelect option").attr("selected","selected");
+			$("#customerForm").submit();
+		});
 	});
 
-	function doDblClickRow(){
-		alert("双击表格数据...");
+	function doDblClickRow(rowIndex,rowData){
 		$('#association_subarea').datagrid( {
 			fit : true,
 			border : true,
 			rownumbers : true,
 			striped : true,
-			url : "json/association_subarea.json",
+			url : "${pageContext.request.contextPath}/subareaAction_findSubareaListByDecidedzoneId.action?decidedzoneId="+rowData.id,
 			columns : [ [{
 				field : 'id',
-				title : '分拣编号',
+				title : '分区编号',
 				width : 120,
 				align : 'center'
 			},{
@@ -233,7 +275,7 @@
 			border : true,
 			rownumbers : true,
 			striped : true,
-			url : "json/association_customer.json",
+			url : "${pageContext.request.contextPath}/decidedzoneAction_findCustomerByDecidedzoneId?id="+rowData.id,
 			columns : [[{
 				field : 'id',
 				title : '客户编号',
@@ -344,9 +386,9 @@
 	</div>
 	
 	<!-- 关联客户窗口 -->
-	<div class="easyui-window" title="关联客户窗口" id="customerWindow" collapsible="false" closed="true" minimizable="false" maximizable="false" style="top:20px;left:200px;width: 400px;height: 300px;">
+	<div modal=true class="easyui-window" title="关联客户窗口" id="customerWindow" collapsible="false" closed="true" minimizable="false" maximizable="false" style="top:20px;left:200px;width: 400px;height: 300px;">
 		<div style="overflow:auto;padding:5px;" border="false">
-			<form id="customerForm" action="${pageContext.request.contextPath }/decidedzone_assigncustomerstodecidedzone.action" method="post">
+			<form id="customerForm" action="${pageContext.request.contextPath }/decidedzoneAction_assigncustomerstodecidedzone.action" method="post">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="3">关联客户</td>

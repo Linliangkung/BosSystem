@@ -15,5 +15,5 @@ public interface IDecidedzoneService {
 	 * @param pageBean
 	 */
 	void pageQuery(PageBean pageBean);
-
+	
 }

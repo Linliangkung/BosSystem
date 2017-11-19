@@ -32,6 +32,8 @@ public class SubareaAction extends BasePageQueryAction<Subarea> {
 	@Autowired
 	private ISubareaService subareaService;
 
+	private String decidedzoneId;
+	
 	public String add() {
 		subareaService.add(getModel());
 		return LIST;
@@ -109,10 +111,20 @@ public class SubareaAction extends BasePageQueryAction<Subarea> {
 		return NONE;
 	}
 	
+	public String findSubareaListByDecidedzoneId() throws IOException{
+		List<Subarea> subareaList=subareaService.findSubareaListByDecidedzoneId(decidedzoneId);
+		java2Json(subareaList, new String[]{"subareas","postcode","shortcode","citycode","decidedzone","name"});
+		return NONE;
+	}
+	
 	public String listajax() throws IOException{
 		List<Subarea> subareas=subareaService.findListNotAssociation();
 		java2Json(subareas, new String[]{"decidedzone","region","startnum","endnum","single"});
 		return NONE;
+	}
+	
+	public void setDecidedzoneId(String decidedzoneId) {
+		this.decidedzoneId = decidedzoneId;
 	}
 
 }
