@@ -126,7 +126,7 @@
 		width : 120,
 		align : 'center',
 		editor :{
-			type : 'validatebox',
+			type : 'numberbox',
 			options : {
 				required: true
 			}
@@ -161,19 +161,27 @@
 			url :  "",
 			idField : 'id',
 			columns : columns,
-			onDblClickRow : doDblClickRow,
+			//onDblClickRow : doDblClickRow,
 			onAfterEdit : function(rowIndex, rowData, changes){
 				console.info(rowData);
 				editIndex = undefined;
+				$.post("${pageContext.request.contextPath}/workordermanageAction_add.action",rowData,function(data){
+					if(data!="1"){
+						//失败
+						$("#grid").datagrid("deleteRow",$("#grid").datagrid("getRowIndex",rowData));
+						$.messager.alert("错误","录入失败","error");
+					}
+				});
 			}
 		});
 	});
 
 	function doDblClickRow(rowIndex, rowData){
-		alert("双击表格数据...");
+		if(editIndex == undefined){
 		console.info(rowIndex);
 		$('#grid').datagrid('beginEdit',rowIndex);
 		editIndex = rowIndex;
+		}
 	}
 </script>
 </head>

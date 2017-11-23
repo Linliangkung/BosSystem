@@ -262,7 +262,16 @@
 				field : 'single',
 				title : '单双号',
 				width : 100,
-				align : 'center'
+				align : 'center',
+				formatter : function(data,row, index){
+					if(data=="0"){
+						return "单双号";
+					}else if(data=="1"){
+						return "单号";
+					}else{
+						return "双号";
+					}
+				}
 			} , {
 				field : 'position',
 				title : '位置',

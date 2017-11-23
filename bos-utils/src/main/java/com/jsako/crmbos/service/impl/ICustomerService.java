@@ -26,6 +26,20 @@ public interface ICustomerService {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns com.jsako.crmbos.service.Customer
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findCustomerByTelephone", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindCustomerByTelephone")
+    @ResponseWrapper(localName = "findCustomerByTelephoneResponse", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindCustomerByTelephoneResponse")
+    public Customer findCustomerByTelephone(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @param arg1
      * @param arg0
      */
@@ -46,6 +60,31 @@ public interface ICustomerService {
     @RequestWrapper(localName = "clearDecidedzoneByDecidedzoneId", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.ClearDecidedzoneByDecidedzoneId")
     @ResponseWrapper(localName = "clearDecidedzoneByDecidedzoneIdResponse", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.ClearDecidedzoneByDecidedzoneIdResponse")
     public void clearDecidedzoneByDecidedzoneId(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<com.jsako.crmbos.service.Customer>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findListNotAssociation", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindListNotAssociation")
+    @ResponseWrapper(localName = "findListNotAssociationResponse", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindListNotAssociationResponse")
+    public List<Customer> findListNotAssociation();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findDecidedzoneIdByAddress", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindDecidedzoneIdByAddress")
+    @ResponseWrapper(localName = "findDecidedzoneIdByAddressResponse", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindDecidedzoneIdByAddressResponse")
+    public String findDecidedzoneIdByAddress(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
 
@@ -73,16 +112,5 @@ public interface ICustomerService {
     @RequestWrapper(localName = "findAll", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindAll")
     @ResponseWrapper(localName = "findAllResponse", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindAllResponse")
     public List<Customer> findAll();
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<com.jsako.crmbos.service.Customer>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findListNotAssociation", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindListNotAssociation")
-    @ResponseWrapper(localName = "findListNotAssociationResponse", targetNamespace = "http://service.crmbos.jsako.com/", className = "com.jsako.crmbos.service.FindListNotAssociationResponse")
-    public List<Customer> findListNotAssociation();
 
 }

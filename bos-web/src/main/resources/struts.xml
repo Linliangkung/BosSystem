@@ -71,6 +71,17 @@
 			</result>
 		</action>
 		
+		<!-- 配置业务通知单管理模块的Action -->
+		<action name="noticebillAction_*" method="{1}" class="noticebillAction">
+			<result name="toAdd" type="redirectAction">
+				<param name="actionName">page_qupai_noticebill_add</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		
+		<!-- 配置工作单管理模块的Action -->
+		<action name="workordermanageAction_*" method="{1}" class="workordermanageAction">
+		</action>
 	</package>
 
 </struts>
