@@ -7,6 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -53,7 +59,43 @@ public class UserAction extends BaseAction<User> {
 	 * 
 	 * @return
 	 */
+	
 	public String login() {
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		// 校验验证码是否输入正确
+		String validatecode = (String) session.get("key");
+		if (StringUtils.isNotBlank(checkcode) && checkcode.equals(validatecode)) {
+			// 输入的验证码正确
+			//使用shiro进行认证操作
+			Subject subject=SecurityUtils.getSubject();
+			if(!subject.isAuthenticated()){
+				//用户尚未登录过
+				//创建用户名和密码令牌对象
+				AuthenticationToken token=new UsernamePasswordToken(getModel().getUsername(),getModel().getPassword());
+				try{
+					//登录
+					subject.login(token);
+					User user = (User) subject.getPrincipal();
+					session.put("existUser", user);
+				}catch(Exception e){
+					e.printStackTrace();
+					if(e instanceof IncorrectCredentialsException || 
+						e instanceof UnknownAccountException 
+							)
+					this.addActionError("用户名或密码错误");
+					return LOGIN;
+				}
+			}
+			return HOME;
+		} else {
+			// 输入的验证码错误,设置提示信息,跳转到登录页面
+			this.addActionError("输入的验证码错误");
+			return LOGIN;
+		}
+	}
+	
+	
+/*	public String login() {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		// 校验验证码是否输入正确
 		String validatecode = (String) session.get("key");
@@ -73,7 +115,7 @@ public class UserAction extends BaseAction<User> {
 			this.addActionError("输入的验证码错误");
 			return LOGIN;
 		}
-	}
+	}*/
 
 	/**
 	 * 用户退出

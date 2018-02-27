@@ -41,9 +41,9 @@ input[type=password] {
 }
 </style>
 <script type="text/javascript">
-	if(window.self != window.top){
+	 if(window.self != window.top){
 		window.top.location = window.location;
-	}
+	} 
 </script>
 </head>
 <body>

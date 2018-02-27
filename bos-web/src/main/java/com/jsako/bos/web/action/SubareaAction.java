@@ -64,6 +64,7 @@ public class SubareaAction extends BasePageQueryAction<Subarea> {
 				// 根据区进行模糊查询
 				detachedCriteria.add(Restrictions.like("r.district", "%" + district + "%"));
 			}
+			
 		}
 		subareaService.pageQuery(pageBean);
 		java2Json(pageBean, new String[] { "currentPage", "pageSize", "detachedCriteria", "subareas", "decidedzone",

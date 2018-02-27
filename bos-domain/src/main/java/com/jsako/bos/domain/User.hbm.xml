@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-    <class name="com.jsako.bos.domain.User" table="t_user">
+<hibernate-mapping package="com.jsako.bos.domain">
+    <class name="User" table="t_user">
         <id name="id" type="java.lang.Integer">
             <column name="id" length="11" />
             <generator class="native" />
@@ -31,6 +31,18 @@
         <property name="remark" type="java.lang.String">
             <column name="remark" />
         </property>
+        
+        <set name="noticebills" inverse="true">
+        	<key>
+        		<column name="user_id"/>
+        	</key>
+			<one-to-many class="Noticebill" />        	
+        </set>
+        
+        <set name="roles" table="user_role">
+        	<key column="user_id"></key>
+        	<many-to-many class="Role" column="role_id" />
+        </set> 
     </class>
     
     <query name="user.editpassword">

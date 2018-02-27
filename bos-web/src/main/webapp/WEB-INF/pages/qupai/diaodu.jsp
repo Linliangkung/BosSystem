@@ -67,7 +67,7 @@
 					return data.replace("T", " ");
 				}
 			} ] ],
-			url : '${pageContext.request.contextPath}/noticebill_findnoassociations.action'
+			url : '${pageContext.request.contextPath}/noticebillAction_findnoassociations.action'
 		});
 
 		// 点击保存按钮，为通知单 进行分单 --- 生成工单
@@ -106,7 +106,7 @@
 						<td>选择取派员</td>
 						<td><input class="easyui-combobox" required="true"
 							name="staff.id"
-							data-options="valueField:'id',textField:'name',url:'${pageContext.request.contextPath }/staff_ajaxlist.action'" />
+							data-options="valueField:'id',textField:'name',url:'${pageContext.request.contextPath }/staffAction_listajax.action'" />
 						</td>
 					</tr>
 				</table>

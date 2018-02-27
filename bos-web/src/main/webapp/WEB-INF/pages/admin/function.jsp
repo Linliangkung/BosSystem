@@ -39,12 +39,13 @@
 					}
 				}           
 			],
-			url : '',
+			url : '${pageContext.request.contextPath}/functionAction_pageQuery.action',
 			columns : [[
 			  {
 				  field : 'id',
 				  title : '编号',
-				  width : 200
+				  width : 200,
+				  checkbox:true
 			  },
 			  {
 				  field : 'name',
@@ -57,9 +58,18 @@
 				  width : 200
 			  },  
 			  {
-				  field : 'generateMenu',
+				  field : 'generatemenu',
 				  title : '是否生成菜单',
-				  width : 200
+				  width : 200,
+				  formatter : function(data,row, index){
+						if(data=="0"){
+							return "不生成";
+						}else if(data=="1"){
+							return "生成";
+						}else{
+							return "不生成";
+						}
+					}
 			  },  
 			  {
 				  field : 'zindex',
@@ -67,11 +77,13 @@
 				  width : 200
 			  },  
 			  {
-				  field : 'page',
+				  field : 'pageResource',
 				  title : '路径',
 				  width : 200
 			  }
-			]]
+			]],
+			pagination : true,
+			fit : true
 		});
 	});
 </script>	

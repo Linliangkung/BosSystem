@@ -5,7 +5,8 @@ package com.jsako.bos.web.action;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ public class StaffAction extends BasePageQueryAction<Staff>{
 		staffService.add(getModel());
 		return LIST;
 	}
-	
+	@RequiresPermissions(value={"staff-delete"})
 	public String deleteBatch(){
 		staffService.deleteBatch(ids);
 		return LIST;

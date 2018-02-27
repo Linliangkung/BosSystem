@@ -12,5 +12,12 @@ public interface IUserDao extends IBaseDao<User> {
 	 * @return
 	 */
 	User findUserByUsernameAndPassword(String username, String password);
+	
+	/**
+	 * 根据用户名获取User
+	 * @param username
+	 * @return
+	 */
+	User findUserByUsername(String username);
 
 }

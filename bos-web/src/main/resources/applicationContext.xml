@@ -51,7 +51,54 @@
 			</list>
 		</property>
 	</bean>
-
+	
+	<!-- 配置shiro过滤器工厂-->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 注入安全管理器对象 -->
+		<property name="securityManager" ref="securityManager"/>
+		<!-- 注入相关页面访问url -->
+		<property name="loginUrl" value="/login.jsp"></property>
+		<property name="successUrl" value="/index.jsp"></property>
+		<property name="unauthorizedUrl" value="/unauthorized.jsp"></property>
+		<!-- 注入url拦截规则 -->
+		<property name="filterChainDefinitions" >
+			<value>
+				/css/**=anon
+				/js/**=anon
+				/images/**=anon
+				/easyui/**=anon
+				/login.jsp*=anon
+				/validatecode.jsp*=anon
+				/userAction_login.action=anon
+				/page_base_staff.action=perms["staff-list"]
+				/**=authc
+			</value>
+		</property>
+	</bean>
+		
+	<!-- 配置shiro安全管理器 -->
+	 <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+	 	<property name="realm" ref="bosRealm"></property>
+	 </bean>
+	
+	<!-- 注册realm -->
+	<bean id="bosRealm" class="com.jsako.bos.realm.BOSRealm">
+		<property name="credentialsMatcher">
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="md5"></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- 开启shiro的注解 -->
+	<!-- 自动代理 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+		<!-- 使用cglib创建代理对象 -->
+		<property name="proxyTargetClass" value="true"/>
+	</bean>
+	<!-- 配置切面类：即那些类需要被代理 -->
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"/>
+	
 	<!-- 配置事务管理器 -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">

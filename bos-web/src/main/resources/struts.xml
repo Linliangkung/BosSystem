@@ -8,6 +8,7 @@
 	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
 	<constant name="struts.objectFactory" value="spring" />
 	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value="action"></constant>
 	
 	
 	<package name="basicstruts2" namespace="/" extends="struts-default">
@@ -26,12 +27,18 @@
 		</interceptors>
 		
 		<!-- 配置默认拦截器栈 -->
-		<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>
+		<!-- <default-interceptor-ref name="myDefaultStack"></default-interceptor-ref> -->
 		
 		<!-- 配置全局结果集 -->
 		<global-results>
 			<result name="toLogin" type="redirect">/login.jsp</result>
+			<result name="unauthorized" type="redirect">/unauthorized.jsp</result>
 		</global-results>
+		
+		<!-- 配置全局异常处理 -->
+		<global-exception-mappings>
+			<exception-mapping result="unauthorized" exception="org.apache.shiro.authz.UnauthorizedException"/>
+		</global-exception-mappings>
 		<!-- 需要进行权限控制的页面访问 -->
 		<action name="page_*_*">
 			<result>/WEB-INF/pages/{1}/{2}.jsp</result>
@@ -57,10 +64,10 @@
 		
 		<!-- 配置分区管理模块的Action -->
 		<action name="subareaAction_*" method="{1}" class="subareaAction">
-		<result name="list" type="redirectAction">
+		 	<result name="list" type="redirectAction">
 				<param name="actionName">page_base_subarea</param>
 				<param name="namespace">/</param>
-			</result>
+			</result> 
 		</action>
 		
 		<!-- 配置定区管理模块的Action -->
@@ -81,6 +88,14 @@
 		
 		<!-- 配置工作单管理模块的Action -->
 		<action name="workordermanageAction_*" method="{1}" class="workordermanageAction">
+		</action>
+		
+		<!-- 配置权限管理模块的Action -->
+		<action name="functionAction_*" method="{1}" class="functionAction">
+			<result name="list" type="redirectAction">
+				<param name="actionName">page_admin_function</param>
+				<param name="namespace">/</param>
+			</result>
 		</action>
 	</package>
 
