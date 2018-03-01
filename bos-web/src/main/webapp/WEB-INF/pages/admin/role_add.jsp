@@ -51,7 +51,7 @@
 		};
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/json/menu.json',
+			url : '${pageContext.request.contextPath}/functionAction_listajax.action',
 			type : 'POST',
 			dataType : 'text',
 			success : function(data) {
@@ -67,7 +67,17 @@
 		
 		// 点击保存
 		$('#save').click(function(){
-			location.href='${pageContext.request.contextPath}/page_admin_privilege.action';
+			var treeObj = $.fn.zTree.getZTreeObj("functionTree");
+			var checkNodes=treeObj.getCheckedNodes(true);
+			var checkIds=new Array();
+			for(var i=0;i<checkNodes.length;i++){
+				checkIds.push(checkNodes[i].id);
+			}
+			var checkIdsStr=checkIds.join(",");
+			$('input[name=functionIds]').val(checkIdsStr);
+			if($('#roleForm').form('validate')){
+			$('#roleForm').submit();
+		}
 		});
 	});
 </script>	
@@ -79,15 +89,16 @@
 			</div>
 		</div>
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
-			<form id="roleForm" method="post">
+			<form id="roleForm" method="post" action="${pageContext.request.contextPath }/roleAction_add.action">
+			<input type="hidden" name="functionIds">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">角色信息</td>
 					</tr>
 					<tr>
-						<td width="200">编号</td>
+						<td width="200">关键字</td>
 						<td>
-							<input type="text" name="id" class="easyui-validatebox" data-options="required:true" />						
+							<input type="text" name="code" class="easyui-validatebox" data-options="required:true" />						
 						</td>
 					</tr>
 					<tr>

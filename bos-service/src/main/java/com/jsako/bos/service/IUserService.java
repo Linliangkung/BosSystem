@@ -1,6 +1,9 @@
 package com.jsako.bos.service;
 
+import java.util.List;
+
 import com.jsako.bos.domain.User;
+import com.jsako.bos.utils.PageBean;
 
 public interface IUserService {
 	/**
@@ -21,5 +24,16 @@ public interface IUserService {
 	 * @param newPassword 新密码
 	 */
 	void editPassword(Integer id, String newPassword);
+	/**
+	 * 添加用户
+	 * @param user
+	 */
+	void add(User user);
+	/**
+	 * 用户分页查询
+	 * @param pageBean
+	 * @return
+	 */
+	void pageQuery(PageBean pageBean);
 
 }

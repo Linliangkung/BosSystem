@@ -25,5 +25,18 @@ public interface IFunctionService {
 	 * @param model 前端提交的权限数据
 	 */
 	void add(Function model);
+	
+	/**
+	 * 查询所有顶级权限，即pid 为null
+	 * @return
+	 */
+	List<Function> findPidIsNull();
+	
+	/**
+	 * 根据用户id查询所有需要显示到菜单的权限
+	 * @param id
+	 * @return
+	 */
+	List<Function> findFunctionMenuByUserId(Integer id);
 
 }

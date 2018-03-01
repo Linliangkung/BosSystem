@@ -3,12 +3,14 @@ package com.jsako.bos.web.action;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.support.ResourceTransactionManager;
 
 import com.jsako.bos.domain.Function;
+import com.jsako.bos.domain.User;
 import com.jsako.bos.service.IFunctionService;
 import com.jsako.bos.web.action.base.BasePageQueryAction;
 
@@ -27,14 +29,25 @@ public class FunctionAction extends BasePageQueryAction<Function> {
 	}
 	
 	public String listajax() throws IOException{
-		List<Function> functions=functionService.findAll();
+		List<Function> functions=functionService.findPidIsNull();
 		java2Json(functions, new String[]{"parentFunction","code","description","pageResource",
-				"generatemenu","zindex","roles","children"});
+				"generatemenu","zindex","roles"});
 		return NONE;
 	}
 	
 	public String add(){
 		functionService.add(getModel());
 		return LIST;
+	}
+	
+	public String listFunctionMenu() throws IOException{
+		User user=(User) SecurityUtils.getSubject().getPrincipal();
+		if(user!=null){
+			List<Function> functions=functionService.findFunctionMenuByUserId(user.getId());
+			java2Json(functions, new String[]{"parentFunction","code","description","pageResource"
+					,"generatemenu","zindex","children","roles","text"});
+			
+		}
+		return NONE;
 	}
 }

@@ -47,12 +47,13 @@
 					}
 				}           
 			],
-			url : '',
+			url : '${pageContext.request.contextPath}/roleAction_pageQuery.action',
 			columns : [[
 				{
 					field : 'id',
 					title : '编号',
-					width : 200
+					width : 200,
+					checkbox:true
 				},
 				{
 					field : 'name',
@@ -64,7 +65,9 @@
 					title : '描述',
 					width : 200
 				} 
-			]]
+			]],
+			pagination : true,
+			fit : true
 		});
 	});
 </script>	

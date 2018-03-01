@@ -18,25 +18,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.jsako.bos.domain.Role;
 import com.jsako.bos.domain.User;
 import com.jsako.bos.service.IUserService;
 import com.jsako.bos.utils.BOSUtils;
 import com.jsako.bos.utils.MD5Utils;
 import com.jsako.bos.web.action.base.BaseAction;
+import com.jsako.bos.web.action.base.BasePageQueryAction;
 import com.opensymphony.xwork2.ActionContext;
 
 @Controller
 @Scope("prototype")
-public class UserAction extends BaseAction<User> {
+public class UserAction extends BasePageQueryAction<User> {
 	// 属性驱动,接收页面输入的验证码
 	private String checkcode;
 	// 接收密码修改页面窗来的参数
 	private String newPassword;
 	private String rePassword;
 	private String oldPassword;
-
+	
+	private String[] roleIds;
 	@Autowired
 	private IUserService userService;
+
+	public void setRoleIds(String[] roleIds) {
+		this.roleIds = roleIds;
+	}
 
 	public void setCheckcode(String checkcode) {
 		this.checkcode = checkcode;
@@ -177,6 +184,25 @@ public class UserAction extends BaseAction<User> {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().write(data);
+		return NONE;
+	}
+	
+	
+	public String add(){
+		User user =getModel();
+		if(roleIds!=null&&roleIds.length>0){
+		for(String roleId:roleIds){
+			Role role=new Role(roleId);
+			user.getRoles().add(role);
+		}
+		}
+		userService.add(user);
+		return LIST;
+	}
+	
+	public String pageQuery() throws IOException{
+		userService.pageQuery(pageBean);
+		java2Json(pageBean, new String[]{"noticebills","roles","birthday"});
 		return NONE;
 	}
 }

@@ -70,7 +70,8 @@
 				/login.jsp*=anon
 				/validatecode.jsp*=anon
 				/userAction_login.action=anon
-				/page_base_staff.action=perms["staff-list"]
+				/page_base_staff.action=perms["staff"]
+				/page_base_region.action=perms["region"]
 				/**=authc
 			</value>
 		</property>
@@ -79,7 +80,13 @@
 	<!-- 配置shiro安全管理器 -->
 	 <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 	 	<property name="realm" ref="bosRealm"></property>
+	 	<property name="cacheManager" ref="ehCacheManager"/>
 	 </bean>
+	 
+	 <!-- 配置shiro缓存管理器 -->
+	<bean id="ehCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+	</bean>
 	
 	<!-- 注册realm -->
 	<bean id="bosRealm" class="com.jsako.bos.realm.BOSRealm">

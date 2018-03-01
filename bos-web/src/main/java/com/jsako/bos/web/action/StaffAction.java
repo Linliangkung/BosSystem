@@ -30,12 +30,14 @@ public class StaffAction extends BasePageQueryAction<Staff>{
 		staffService.add(getModel());
 		return LIST;
 	}
-	@RequiresPermissions(value={"staff-delete"})
+	
+	@RequiresPermissions(value={"staff.delete"})
 	public String deleteBatch(){
 		staffService.deleteBatch(ids);
 		return LIST;
 	}
 	
+	@RequiresPermissions(value={"staff.edit"})
 	public String edit(){
 		//根据id查出取派员
 		Staff queryStaff=staffService.findById(getModel().getId());

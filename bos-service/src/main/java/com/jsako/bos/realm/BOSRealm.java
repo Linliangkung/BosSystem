@@ -1,5 +1,7 @@
 package com.jsako.bos.realm;
 
+import java.util.List;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -12,7 +14,9 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.jsako.bos.dao.IFunctionDao;
 import com.jsako.bos.dao.IUserDao;
+import com.jsako.bos.domain.Function;
 import com.jsako.bos.domain.User;
 
 public class BOSRealm extends AuthorizingRealm {
@@ -20,13 +24,18 @@ public class BOSRealm extends AuthorizingRealm {
 	@Autowired
 	private IUserDao userDao;
 	
+	@Autowired
+	private IFunctionDao functionDao;
+	
 	//授权方法
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		System.out.println(principals);
+		User user=(User) principals.getPrimaryPrincipal();
+		List<Function> functions=functionDao.getFunctionsByUserId(user.getId());
 		SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
-		info.addStringPermission("staff-list");
-		info.addStringPermission("staff-delete");
+		for (Function function : functions) {
+			info.addStringPermission(function.getCode());
+		}
 		return info;
 	}
 	

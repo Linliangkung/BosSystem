@@ -58,5 +58,13 @@ public class TestFunctionRole {
 		openSession.close();
 		sessionFactory.close();
 	}
-	
+	@Test
+	public void test2(){
+		Session session = sessionFactory.openSession();
+		
+		Function function = session.get(Function.class, "112");
+		
+		System.out.println(function.getParentFunction().getId());
+	}
+	 
 }

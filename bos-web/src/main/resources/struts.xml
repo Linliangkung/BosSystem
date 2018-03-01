@@ -48,6 +48,10 @@
 		<action name="userAction_*" method="{1}" class="userAction">
 		 	<result name="home" type="redirect">/index.jsp</result>
 			<result name="login">/login.jsp</result>
+			<result name="list" type="redirectAction">
+				<param name="actionName">page_admin_userlist</param>
+				<param name="namespace">/</param>
+			</result>
 		</action>
 		
 		<!-- 配置取派员管理模块的Action -->
@@ -94,6 +98,14 @@
 		<action name="functionAction_*" method="{1}" class="functionAction">
 			<result name="list" type="redirectAction">
 				<param name="actionName">page_admin_function</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		
+		<!-- 配置角色管理模块的Action -->
+		<action name="roleAction_*" method="{1}" class="roleAction">
+			<result name="list" type="redirectAction">
+				<param name="actionName">page_admin_role</param>
 				<param name="namespace">/</param>
 			</result>
 		</action>

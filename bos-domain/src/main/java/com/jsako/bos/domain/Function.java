@@ -1,13 +1,17 @@
 package com.jsako.bos.domain;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 权限实体
  */
 
-public class Function implements java.io.Serializable {
+public class Function implements java.io.Serializable,Comparable<Function> {
 
 	// Fields
 
@@ -21,6 +25,21 @@ public class Function implements java.io.Serializable {
 	private Integer zindex;
 	private Set roles = new HashSet(0);//当前权限对应的多个角色
 	private Set children = new HashSet(0);//当前权限的下级权限
+	public String getText(){
+		return name;
+	}
+	
+	public String getPage(){
+		return pageResource;
+	}
+	
+	public String getpId(){
+		if(parentFunction!=null&&StringUtils.isNotBlank(parentFunction.getId())){
+			return parentFunction.getId();
+		}
+		return "0";
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -76,9 +95,15 @@ public class Function implements java.io.Serializable {
 		this.roles = roles;
 	}
 	public Set getChildren() {
-		return children;
+		return new TreeSet<Function>(children);
 	}
 	public void setChildren(Set children) {
 		this.children = children;
 	}
+
+	@Override
+	public int compareTo(Function o) {
+		return this.zindex.compareTo(o.zindex);
+	}
+	
 }

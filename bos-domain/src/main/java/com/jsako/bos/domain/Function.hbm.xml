@@ -32,7 +32,7 @@
             <key column="function_id"/>
             <many-to-many class="Role" column="role_id"/>
         </set>
-        <set name="children" inverse="true">
+        <set name="children" inverse="true" lazy="false">
             <key>
                 <column name="pid" length="32" />
             </key>

@@ -77,7 +77,7 @@
 		iconCls : 'icon-add',
 		handler : doAdd
 	}, 
-	<shiro:hasPermission name="staff-delete">
+	<shiro:hasPermission name="staff.delete">
 	{
 		id : 'button-delete',
 		text : '删除',
@@ -157,8 +157,10 @@
 			toolbar : toolbar,
 			url : "${pageContext.request.contextPath}/staffAction_pageQuery.action",
 			idField : 'id',
-			columns : columns,
-			onDblClickRow : doDblClickRow
+			columns : columns
+			<shiro:hasPermission name="staff.edit">
+			,onDblClickRow : doDblClickRow
+			</shiro:hasPermission>
 		});
 		
 		// 添加取派员窗口
@@ -172,7 +174,9 @@
 	        resizable:false
 	    });
 		
+		
 		// 修改取派员窗口
+	
 		$('#editStaffWindow').window({
 	        title: '修改取派员',
 	        width: 400,
@@ -182,8 +186,7 @@
 	        height: 400,
 	        resizable:false
 	    });
-		
-		
+			
 		// 拓展easyui validatebox的校验规则
 		$.extend($.fn.validatebox.defaults.rules, { 
 			telephone: { 

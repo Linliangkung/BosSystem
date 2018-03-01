@@ -37,4 +37,14 @@ public class FunctionServiceImpl implements IFunctionService {
 		functionDao.save(model);
 	}
 
+	@Override
+	public List<Function> findPidIsNull() {
+		return functionDao.findPidIsNull();
+	}
+
+	@Override
+	public List<Function> findFunctionMenuByUserId(Integer id) {
+		return functionDao.findFunctionMenuByUserId(id);
+	}
+
 }

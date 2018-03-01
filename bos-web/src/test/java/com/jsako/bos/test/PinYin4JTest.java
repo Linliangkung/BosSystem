@@ -1,6 +1,6 @@
 package com.jsako.bos.test;
 
-import java.util.Arrays;
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -35,7 +35,10 @@ public class PinYin4JTest {
 		
 		Integer[] integers=new Integer[0];
 		System.out.println(integers[0]);
-		
 	}
+	
+	
+	
+	
 	
 }
